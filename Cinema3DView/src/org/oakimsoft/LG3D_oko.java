@@ -29,7 +29,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class LG3D_oko implements ActionListener {
 
-	private static final long serialVersionUID = 1L;
+	// private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JToolBar globalToolbar;
 	private JToolBar downToolbar;
@@ -87,7 +87,7 @@ public class LG3D_oko implements ActionListener {
 
 		});
 
-		frame.setTitle("Cinema3DViewer (v.0.0.1)");
+		frame.setTitle("LG3D oKo (v.0.0.2)");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setExtendedState(Frame.MAXIMIZED_BOTH);
