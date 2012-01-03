@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.BoxLayout;
 
 public class DlgComposer extends JDialog {
 
@@ -32,9 +33,17 @@ public class DlgComposer extends JDialog {
 		setTitle("Composer");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
-		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.X_AXIS));
+		{
+			JPanel panel = new JPanel();
+			contentPanel.add(panel);
+		}
+		{
+			JPanel panel2 = new JPanel();
+			contentPanel.add(panel2);
+		}
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
