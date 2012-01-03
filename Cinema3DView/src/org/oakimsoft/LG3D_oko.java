@@ -370,6 +370,7 @@ public class LG3D_oko implements ActionListener {
 			}
 		}
 
+		
 		if (ae.getActionCommand().equals("Composer")) {
 			DlgComposer composer = new DlgComposer();
 			composer.setVisible(true);
