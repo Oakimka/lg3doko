@@ -87,7 +87,7 @@ public class LG3D_oko implements ActionListener {
 
 		});
 
-		frame.setTitle("LG3D oKo (v.0.0.3)");
+		frame.setTitle("LG3D oKo (v.0.0.4)");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setExtendedState(Frame.MAXIMIZED_BOTH);
