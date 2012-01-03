@@ -116,6 +116,12 @@ public class LG3D_oko implements ActionListener {
 		jbtnOpenFolder.addActionListener(this);
 		this.globalToolbar.add(jbtnOpenFolder);
 
+		JButton jbtnComposer = new JButton();
+		jbtnComposer.setText("Composer");
+		jbtnComposer.setActionCommand("Composer");
+		jbtnComposer.addActionListener(this);
+		this.globalToolbar.add(jbtnComposer);
+
 		
 		this.globalToolbar.add(this.lblMediaInfo);		
 		
@@ -362,6 +368,12 @@ public class LG3D_oko implements ActionListener {
 				this.updateMediaInfo();
 				jpnMain.repaint();
 			}
+		}
+
+		if (ae.getActionCommand().equals("Composer")) {
+			DlgComposer composer = new DlgComposer();
+			composer.setVisible(true);
+			
 		}
 
 		if (ae.getActionCommand().equals("Close")) {
