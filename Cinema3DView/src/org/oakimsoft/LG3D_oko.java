@@ -38,10 +38,10 @@ public class LG3D_oko implements ActionListener {
 	public JSlider jsliderParallax = null;
 	public JLabel lblMediaInfo = new JLabel();
 	private int currentFile = 0;
-
 	public BufferedImage biBack = null;
-
 	public GlobManager globManager = new GlobManager();
+	public DlgComposer composer = null;
+	
 
 	/**
 	 * Launch the application.
@@ -372,7 +372,8 @@ public class LG3D_oko implements ActionListener {
 
 		
 		if (ae.getActionCommand().equals("Composer")) {
-			DlgComposer composer = new DlgComposer();
+			if (composer == null)
+			  composer = new DlgComposer(globManager);
 			composer.setVisible(true);
 			
 		}
