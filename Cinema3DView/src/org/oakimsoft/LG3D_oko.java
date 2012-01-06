@@ -37,7 +37,6 @@ public class LG3D_oko implements ActionListener {
 	public StereoViewer sView = new StereoViewer();
 	public JSlider jsliderParallax = null;
 	public JLabel lblMediaInfo = new JLabel();
-	private int currentFile = 0;
 	public BufferedImage biBack = null;
 	public GlobManager globManager = new GlobManager();
 	public DlgComposer composer = null;
@@ -306,7 +305,7 @@ public class LG3D_oko implements ActionListener {
 						.get("LastOpenFile")));
 			int returnVal = chooser.showOpenDialog(jdlg);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				this.currentFile = 0;
+				globManager.currentFile = 0;
 				System.out.println("You chose to open this file: "
 						+ chooser.getSelectedFile().getName());
 				globManager.registry.put("LastOpenFile", chooser
@@ -314,7 +313,7 @@ public class LG3D_oko implements ActionListener {
 				globManager.files.clear();
 				globManager.files.add(chooser.getSelectedFile());
 				sView.biConverted = null;
-				sView.load(globManager.files.get(this.currentFile));
+				sView.load(globManager.files.get(globManager.currentFile));
 				sView.setTargetSize(jpnMain.getWidth(), jpnMain.getHeight());
 				sView.convert();
 				jpnMain.biDisplaying = sView.biConverted;
@@ -336,7 +335,7 @@ public class LG3D_oko implements ActionListener {
 						.get("LastOpenFolder")));
 			int returnVal = chooser.showOpenDialog(jdlg);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-				this.currentFile = 0;
+				globManager.currentFile = 0;
 				globManager.registry.put("LastOpenFolder", chooser
 						.getSelectedFile().getAbsolutePath());
 				File[] files;
@@ -358,7 +357,7 @@ public class LG3D_oko implements ActionListener {
 
 				sView.biConverted = null;
 				if (globManager.files.size() > 0) {
-					sView.load(globManager.files.get(this.currentFile));
+					sView.load(globManager.files.get(globManager.currentFile));
 					sView.setTargetSize(jpnMain.getWidth(), jpnMain.getHeight());
 					sView.convert();
 					jpnMain.biDisplaying = sView.biConverted;
@@ -373,7 +372,7 @@ public class LG3D_oko implements ActionListener {
 		
 		if (ae.getActionCommand().equals("Composer")) {
 			if (composer == null)
-			  composer = new DlgComposer(globManager);
+			  composer = new DlgComposer(globManager, sView, (ActionListener)this);
 			composer.setVisible(true);
 			
 		}
@@ -497,11 +496,11 @@ public class LG3D_oko implements ActionListener {
 		if (ae.getActionCommand().equals(C3DActions.selectNextFile)) {
 			if (this.globManager.files.size() == 0)
 				return;
-			this.currentFile++;
-			if (this.currentFile >= this.globManager.files.size()) {
-				this.currentFile = 0;
+			globManager.currentFile++;
+			if (globManager.currentFile >= this.globManager.files.size()) {
+				globManager.currentFile = 0;
 			}
-			sView.load(this.globManager.files.get(this.currentFile));
+			sView.load(this.globManager.files.get(globManager.currentFile));
 			sView.convert();
 			if (sView.biConverted != null)
 				jpnMain.biDisplaying = sView.biConverted;
@@ -513,11 +512,11 @@ public class LG3D_oko implements ActionListener {
 			if (this.globManager.files.size() == 0)
 				return;
 
-			this.currentFile--;
-			if (this.currentFile < 0) {
-				this.currentFile = this.globManager.files.size() - 1;
+			globManager.currentFile--;
+			if (globManager.currentFile < 0) {
+				globManager.currentFile = this.globManager.files.size() - 1;
 			}
-			sView.load(this.globManager.files.get(this.currentFile));
+			sView.load(this.globManager.files.get(globManager.currentFile));
 			sView.convert();
 			if (sView.biConverted != null)
 				jpnMain.biDisplaying = sView.biConverted;
@@ -531,9 +530,9 @@ public class LG3D_oko implements ActionListener {
 	public void updateMediaInfo(){
 		this.lblMediaInfo.setFont(new Font(Font.SANS_SERIF,Font.BOLD,18));
 		this.lblMediaInfo.setText( 
-				"   [ "+String.valueOf(currentFile+1)+"/"+String.valueOf(globManager.files.size())+" ]   " +
+				"   [ "+String.valueOf(globManager.currentFile+1)+"/"+String.valueOf(globManager.files.size())+" ]   " +
 				
-				globManager.files.get(currentFile).getAbsolutePath().concat(
+				globManager.files.get(globManager.currentFile).getAbsolutePath().concat(
 						"  "+ " "
 						
 						));

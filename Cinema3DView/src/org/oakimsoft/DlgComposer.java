@@ -5,17 +5,20 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.io.File;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JSpinner;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class DlgComposer extends JDialog implements ActionListener {
@@ -35,29 +38,27 @@ public class DlgComposer extends JDialog implements ActionListener {
 	public JSpinner spnrRightRotation = new JSpinner();
 	public JSpinner spnrWidth = new JSpinner();
 	public JSpinner spnrHeight = new JSpinner();
-	public GlobManager globManager = null;	
+	public GlobManager globManager = null;
 	public StereoComposer composer = new StereoComposer();
+	private ActionListener externalActionListener=null;
+	private StereoViewer sView = null;
+	private JTextField textField;
+	private JTextField textField_1;
 
-	
-	
 	/**
 	 * Launch the application.
 	 */
-/*	public static void main(String[] args) {
-		try {
-			DlgComposer dialog = new DlgComposer();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Create the dialog.
+	/*
+	 * public static void main(String[] args) { try { DlgComposer dialog = new
+	 * DlgComposer(); dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+	 * dialog.setVisible(true); } catch (Exception e) { e.printStackTrace(); } }
+	 * 
+	 * /** Create the dialog.
 	 */
-	public DlgComposer(GlobManager pGlobManager) {
+	public DlgComposer(GlobManager pGlobManager, StereoViewer stereoViewer, ActionListener al) {
 		globManager = pGlobManager;
+		sView = stereoViewer;
+		externalActionListener = al;
 		setMinimumSize(new Dimension(600, 10));
 		setTitle("Composer");
 		setBounds(100, 100, 700, 307);
@@ -74,24 +75,24 @@ public class DlgComposer extends JDialog implements ActionListener {
 			panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 			{
 				JButton btnLoadLeftImage = new JButton("Load Left Image");
-				btnLoadLeftImage.setActionCommand("LoadLeftImage");
+				btnLoadLeftImage.setActionCommand("LoadImageLeft");
 				btnLoadLeftImage.addActionListener(this);
 				panel.add(btnLoadLeftImage);
 			}
-    		pnLeftImage.setPreferredSize(new Dimension(10, 90));
-	    	pnLeftImage.setMinimumSize(new Dimension(10, 70));
+			pnLeftImage.setPreferredSize(new Dimension(10, 90));
+			pnLeftImage.setMinimumSize(new Dimension(10, 70));
 			pnLeftImage.setMaximumSize(new Dimension(32767, 90));
 			pnLeftImage.biDisplaying = composer.biLeftImage;
 			panel.add(pnLeftImage);
 			{
 				JButton btnLoadRightImage = new JButton("Load Right Image");
-				btnLoadRightImage.setActionCommand("LoadRightImage");
+				btnLoadRightImage.setActionCommand("LoadImageRight");
 				btnLoadRightImage.addActionListener(this);
-                panel.add(btnLoadRightImage);
+				panel.add(btnLoadRightImage);
 			}
-    		pnRightImage.setPreferredSize(new Dimension(10, 90));
-    		pnRightImage.setMinimumSize(new Dimension(10, 90));
-    		pnRightImage.setMaximumSize(new Dimension(32767, 90));
+			pnRightImage.setPreferredSize(new Dimension(10, 90));
+			pnRightImage.setMinimumSize(new Dimension(10, 90));
+			pnRightImage.setMaximumSize(new Dimension(32767, 90));
 			pnRightImage.biDisplaying = composer.biRightImage;
 			panel.add(pnRightImage);
 		}
@@ -144,10 +145,16 @@ public class DlgComposer extends JDialog implements ActionListener {
 						panel_1.add(lblRotation);
 					}
 					{
+						spnrLeftRotation.setModel(new SpinnerNumberModel(new Double(0), null, null, new Double(1)));
 						spnrLeftRotation.setPreferredSize(new Dimension(60, 18));
 						spnrLeftRotation.setMinimumSize(new Dimension(60, 18));
 						spnrLeftRotation.setMaximumSize(new Dimension(60, 32767));
 						panel_1.add(spnrLeftRotation);
+					}
+					{
+						textField = new JTextField();
+						panel_1.add(textField);
+						textField.setColumns(10);
 					}
 				}
 			}
@@ -194,10 +201,16 @@ public class DlgComposer extends JDialog implements ActionListener {
 						panel_1.add(label);
 					}
 					{
+						spnrRightRotation.setModel(new SpinnerNumberModel(new Double(0), null, null, new Double(1)));
 						spnrRightRotation.setPreferredSize(new Dimension(60, 18));
 						spnrRightRotation.setMinimumSize(new Dimension(60, 18));
 						spnrRightRotation.setMaximumSize(new Dimension(60, 32767));
 						panel_1.add(spnrRightRotation);
+					}
+					{
+						textField_1 = new JTextField();
+						textField_1.setColumns(10);
+						panel_1.add(textField_1);
 					}
 				}
 			}
@@ -230,6 +243,21 @@ public class DlgComposer extends JDialog implements ActionListener {
 			}
 		}
 		{
+			JPanel panel = new JPanel();
+			panel.setMaximumSize(new Dimension(32767, 50));
+			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+			flowLayout.setAlignment(FlowLayout.LEFT);
+			contentPanel.add(panel);
+			{
+				JButton btnApply = new JButton("Apply");
+				btnApply.setActionCommand("APPLY");
+				btnApply.addActionListener(this);
+
+				panel.add(btnApply);
+				getRootPane().setDefaultButton(btnApply);
+			}
+		}
+		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -237,7 +265,6 @@ public class DlgComposer extends JDialog implements ActionListener {
 				JButton okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
 				buttonPane.add(okButton);
-				getRootPane().setDefaultButton(okButton);
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
@@ -247,46 +274,79 @@ public class DlgComposer extends JDialog implements ActionListener {
 		}
 	}
 
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if (e.getActionCommand().equals("LoadRightImage")) {
-			
-		}
-		if (e.getActionCommand().equals("LoadLeftImage")) {
+
+		if (e.getActionCommand().startsWith("LoadImage")) {
 			JDialog jdlg = new JDialog();
 			JFileChooser chooser = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter(
-					"Graphics (JPEG,BMP)", "jpg", "jpeg", "bmp", "jps","png");
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("Graphics (JPEG,BMP)", "jpg", "jpeg", "bmp", "jps", "png");
 			chooser.setFileFilter(filter);
 			chooser.setDialogTitle("Open file...");
 			if (globManager.registry.get("LastOpenFile") != null)
-				chooser.setCurrentDirectory(new File(globManager.registry
-						.get("LastOpenFile")));
+				chooser.setCurrentDirectory(new File(globManager.registry.get("LastOpenFile")));
 			int returnVal = chooser.showOpenDialog(jdlg);
 			if (returnVal == JFileChooser.APPROVE_OPTION) {
-//				this.currentFile = 0;
-//				System.out.println("You chose to open this file: "
-//						+ chooser.getSelectedFile().getName());
-//				globManager.registry.put("LastOpenFile", chooser
-//						.getSelectedFile().getAbsolutePath());
-//				globManager.files.clear();
-//				globManager.files.add(chooser.getSelectedFile());
-//				sView.biConverted = null;
-//				sView.load(globManager.files.get(this.currentFile));
-//				sView.setTargetSize(jpnMain.getWidth(), jpnMain.getHeight());
-//				sView.convert();
-//				jpnMain.biDisplaying = sView.biConverted;
-//				jpnMain.repaint();
-//				this.updateMediaInfo();
+				// globManager.currentFile = 0;
+				globManager.registry.put("LastOpenFile", chooser.getSelectedFile().getAbsolutePath());
+				// globManager.files.clear();
+				// globManager.files.add(chooser.getSelectedFile());
+				sView.biConverted = null;
+				if (e.getActionCommand().endsWith("Left")) {
+
+					composer.loadLeftImage(chooser.getSelectedFile());
+					pnLeftImage.biDisplaying = composer.biLeftImage;
+					this.pnLeftImage.repaint();
+				}
+				if (e.getActionCommand().endsWith("Right")) {
+
+					composer.loadRightImage(chooser.getSelectedFile());
+					pnRightImage.biDisplaying = composer.biRightImage;
+					this.pnRightImage.repaint();
+				}
+				this.updateValuesFromComposer();
+				// sView.setTargetSize(jpnMain.getWidth(), jpnMain.getHeight());
+				// sView.convert();
+				// jpnMain.biDisplaying = sView.biConverted;
+				// jpnMain.repaint();
+				// this.updateMediaInfo();
 			}
 		}
-		
-		
+		if (e.getActionCommand().startsWith("APPLY")) {
+			this.updateComposerByValues();
+			composer.convert();
+			if (composer.biResult!=null){
+			  sView.biSource= composer.biResult;
+			  this.externalActionListener.actionPerformed(new ActionEvent(this,MouseEvent.MOUSE_CLICKED, C3DActions.refreshImage));			
+			  
+			  
+			}
+			
+		}
 
-		
 	}
 
+	public void updateValuesFromComposer() {
+		this.spnrWidth.setValue(this.composer.ResultWidth);
+		this.spnrHeight.setValue(this.composer.ResultHeight);
+
+	}
+
+	public void updateComposerByValues() {
+		this.composer.ResultWidth = (Integer)this.spnrWidth.getValue();
+		this.composer.ResultHeight = (Integer)this.spnrHeight.getValue();
+
+
+		this.composer.LeftOffsetX = (Integer)this.spnrLeftOffsetX.getValue();
+		this.composer.LeftOffsetY = (Integer)this.spnrLeftOffsetY.getValue();
+		this.composer.RightOffsetX = (Integer)this.spnrRightOffsetX.getValue();
+		this.composer.RightOffsetY = (Integer)this.spnrRightOffsetY.getValue();
+
+		this.composer.LeftRotation = (Double)this.spnrLeftRotation.getValue();
+		this.composer.RightRotation = (Double)this.spnrRightRotation.getValue();
+
+		
+		
+	}
+	
 }
