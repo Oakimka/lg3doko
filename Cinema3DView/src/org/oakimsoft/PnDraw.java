@@ -36,7 +36,7 @@ public class PnDraw extends JPanel {
 
 		Rectangle rr = this.getBounds();
 		Graphics2D g2d = (Graphics2D) g;
-		g2d.setBackground(Color.gray);
+		g2d.setBackground(Color.black);
 
 		g2d.clearRect(0, 0, rr.width, rr.height);
 

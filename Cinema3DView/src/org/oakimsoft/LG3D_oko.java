@@ -86,7 +86,7 @@ public class LG3D_oko implements ActionListener {
 
 		});
 
-		frame.setTitle("LG3D oKo (v.0.0.4)");
+		frame.setTitle("LG3D oKo (v.0.1.0)");
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		//frame.setExtendedState(Frame.MAXIMIZED_BOTH);
@@ -104,14 +104,19 @@ public class LG3D_oko implements ActionListener {
 		}
 
 		JButton jbtnOpen = new JButton();
-		jbtnOpen.setText("Open file..");
+		jbtnOpen.setText("File..");
 		jbtnOpen.setActionCommand("OpenFile");
+		jbtnOpen.setIcon(new ImageIcon(this.getClass().getResource(
+				"/pic/24x24/fileopen.png")));
+		
 		jbtnOpen.addActionListener(this);
 		this.globalToolbar.add(jbtnOpen);
 
 		JButton jbtnOpenFolder = new JButton();
-		jbtnOpenFolder.setText("Open folder...");
+		jbtnOpenFolder.setText("Folder...");
 		jbtnOpenFolder.setActionCommand("OpenFolder");
+		jbtnOpenFolder.setIcon(new ImageIcon(this.getClass().getResource(
+				"/pic/24x24/folder_open.png")));
 		jbtnOpenFolder.addActionListener(this);
 		this.globalToolbar.add(jbtnOpenFolder);
 
@@ -119,6 +124,8 @@ public class LG3D_oko implements ActionListener {
 		jbtnComposer.setText("Composer");
 		jbtnComposer.setActionCommand("Composer");
 		jbtnComposer.addActionListener(this);
+		jbtnComposer.setIcon(new ImageIcon(this.getClass().getResource(
+				"/pic/24x24/gnome-run.png")));
 		this.globalToolbar.add(jbtnComposer);
 
 		
