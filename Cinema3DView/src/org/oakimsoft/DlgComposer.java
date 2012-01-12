@@ -67,6 +67,8 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 	private JSpinner			spnrRightAnchorY;
 	private JCheckBox			chckbxAutoApply;
 	public boolean				stopAutoApply			= false;
+	private JSpinner spnrZoom;
+	private JLabel lblImageSize;
 
 	/**
 	 * Launch the application.
@@ -266,7 +268,7 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 			FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 			flowLayout.setAlignment(FlowLayout.LEFT);
 			// FlowLayout flowLayout = (FlowLayout) panel.getLayout();
-			panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Croping", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+			panel.setBorder(new TitledBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null), "Source crop", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 			panel.setMaximumSize(new Dimension(32767, 30));
 			contentPanel.add(panel);
 			{
@@ -327,6 +329,27 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 			{
 				chckbxAutoApply = new JCheckBox("Auto apply");
 				panel.add(chckbxAutoApply);
+			}
+			{
+				JLabel lblResizeResultImage = new JLabel("Resize result image : ");
+				panel.add(lblResizeResultImage);
+			}
+			{
+				spnrZoom = new JSpinner();
+				spnrZoom.setModel(new SpinnerNumberModel(100, 1, 1000, 1));
+				panel.add(spnrZoom);
+				spnrZoom.setPreferredSize(new Dimension(60, 18));
+				spnrZoom.setMinimumSize(new Dimension(60, 18));
+				spnrZoom.setMaximumSize(new Dimension(60, 32767));
+				spnrZoom.addChangeListener(this);				
+			}
+			{
+				JLabel label = new JLabel("%");
+				panel.add(label);
+			}
+			{
+				lblImageSize = new JLabel("image size");
+				panel.add(lblImageSize);
 			}
 		}
 		{
@@ -425,6 +448,7 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 					pnRightImage.biDisplaying = composer.biRightImage;
 					this.pnRightImage.repaint();
 				}
+				
 				this.updateComposerByValues();
 			}
 			this.pnLeftImage.repaint();
@@ -515,6 +539,8 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		this.composer.LeftAnchor.y = (Integer) this.spnrLeftAnchorY.getValue();
 		this.composer.RightAnchor.x = (Integer) this.spnrRightAnchorX.getValue();
 		this.composer.RightAnchor.y = (Integer) this.spnrRightAnchorY.getValue();
+
+		this.composer.ResultZoom = (Integer) this.spnrZoom.getValue();
 
 	}
 
@@ -627,6 +653,19 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		if (this.chckbxAutoApply.isSelected()) {
 			if (!this.stopAutoApply)
 				this.applyChanges();
+		}else{
+			if (
+				(arg0.getSource() == this.spnrResultOffsetX)||
+				(arg0.getSource() == this.spnrResultOffsetY)||
+				(arg0.getSource() == this.spnrHeight)||
+				(arg0.getSource() == this.spnrWidth)
+				
+				){
+				this.updateComposerByValues();
+				this.pnLeftImage.repaint();
+				this.pnRightImage.repaint();
+
+			}
 		}
 
 	}
