@@ -2,6 +2,7 @@ package org.oakimsoft;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -12,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -36,7 +38,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
-public class DlgComposer extends JDialog implements ActionListener, MouseListener, PaintComponentExtension, ChangeListener {
+public class DlgComposer extends JDialog implements ActionListener, MouseListener, PaintComponentExtension, ChangeListener, MouseMotionListener {
 
 	/**
 	 * 
@@ -67,8 +69,9 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 	private JSpinner			spnrRightAnchorY;
 	private JCheckBox			chckbxAutoApply;
 	public boolean				stopAutoApply			= false;
-	private JSpinner spnrZoom;
-	private JLabel lblImageSize;
+	private JSpinner			spnrZoom;
+	private JLabel				lblImageSize;
+	public int					overPoint				= 0;
 
 	/**
 	 * Launch the application.
@@ -87,9 +90,11 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		pnLeftImage.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnLeftImage.paintComponentExtension = (PaintComponentExtension) this;
 		pnLeftImage.setExternalMouseListener((MouseListener) this);
+		pnLeftImage.setExternalMouseMotionListener((MouseMotionListener) this);
 		pnRightImage.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		pnRightImage.paintComponentExtension = (PaintComponentExtension) this;
 		pnRightImage.setExternalMouseListener((MouseListener) this);
+		pnRightImage.setExternalMouseMotionListener((MouseMotionListener) this);
 
 		setMinimumSize(new Dimension(600, 10));
 		setTitle("Stereo composer");
@@ -341,7 +346,7 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 				spnrZoom.setPreferredSize(new Dimension(60, 18));
 				spnrZoom.setMinimumSize(new Dimension(60, 18));
 				spnrZoom.setMaximumSize(new Dimension(60, 32767));
-				spnrZoom.addChangeListener(this);				
+				spnrZoom.addChangeListener(this);
 			}
 			{
 				JLabel label = new JLabel("%");
@@ -416,10 +421,10 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 							this.spnrResultOffsetX.setValue(-composer.biLeftImage.getWidth() / 2);
 						}
 						this.stopAutoApply = false;
-						if (this.chckbxAutoApply.isSelected()){
+						if (this.chckbxAutoApply.isSelected()) {
 							this.applyChanges();
 						}
-						
+
 					}
 					pnLeftImage.biDisplaying = composer.biLeftImage;
 					this.pnLeftImage.repaint();
@@ -440,15 +445,15 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 							this.spnrResultOffsetX.setValue(-composer.biRightImage.getWidth() / 2);
 						}
 						this.stopAutoApply = false;
-						if (this.chckbxAutoApply.isSelected()){
+						if (this.chckbxAutoApply.isSelected()) {
 							this.applyChanges();
 						}
-					
+
 					}
 					pnRightImage.biDisplaying = composer.biRightImage;
 					this.pnRightImage.repaint();
 				}
-				
+
 				this.updateComposerByValues();
 			}
 			this.pnLeftImage.repaint();
@@ -458,12 +463,11 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		if (e.getActionCommand().equals("APPLY")) {
 			this.applyChanges();
 		}
-		
+
 		if (e.getActionCommand().equals("SAVE")) {
 			this.save();
-			
+
 		}
-		
 
 		if (e.getActionCommand().startsWith("RESET")) {
 			if ((composer.biLeftImage != null) && (composer.biRightImage != null)) {
@@ -482,11 +486,10 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 				this.pnLeftImage.repaint();
 				this.pnRightImage.repaint();
 				this.updateComposerByValues();
-				if (this.chckbxAutoApply.isSelected()){
+				if (this.chckbxAutoApply.isSelected()) {
 					this.applyChanges();
 				}
-					
-				
+
 			}
 
 		}
@@ -563,22 +566,22 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (e.getSource().equals(this.pnLeftImage)) {
-			composer.LeftAnchor.setLocation(this.pnLeftImage.coorsFromPanelToPic(e.getPoint()));
-			this.stopAutoApply = true;
-			this.spnrLeftAnchorX.setValue(this.composer.LeftAnchor.x);
-			this.stopAutoApply = false;
-			this.spnrLeftAnchorY.setValue(this.composer.LeftAnchor.y);
-			this.pnLeftImage.repaint();
-		}
-		if (e.getSource().equals(this.pnRightImage)) {
-			composer.RightAnchor.setLocation(this.pnRightImage.coorsFromPanelToPic(e.getPoint()));
-			this.stopAutoApply = true;
-			this.spnrRightAnchorX.setValue(this.composer.RightAnchor.x);
-			this.stopAutoApply = false;
-			this.spnrRightAnchorY.setValue(this.composer.RightAnchor.y);
-			this.pnRightImage.repaint();
-		}
+		// if (e.getSource().equals(this.pnLeftImage)) {
+		// composer.LeftAnchor.setLocation(this.pnLeftImage.coorsFromPanelToPic(e.getPoint()));
+		// this.stopAutoApply = true;
+		// this.spnrLeftAnchorX.setValue(this.composer.LeftAnchor.x);
+		// this.stopAutoApply = false;
+		// this.spnrLeftAnchorY.setValue(this.composer.LeftAnchor.y);
+		// this.pnLeftImage.repaint();
+		// }
+		// if (e.getSource().equals(this.pnRightImage)) {
+		// composer.RightAnchor.setLocation(this.pnRightImage.coorsFromPanelToPic(e.getPoint()));
+		// this.stopAutoApply = true;
+		// this.spnrRightAnchorX.setValue(this.composer.RightAnchor.x);
+		// this.stopAutoApply = false;
+		// this.spnrRightAnchorY.setValue(this.composer.RightAnchor.y);
+		// this.pnRightImage.repaint();
+		// }
 	}
 
 	@Override
@@ -589,60 +592,49 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 
 	@Override
 	public void paintComponentExt(Object sourceObject, Graphics g) {
+		JPanelPicture currentPanel = null;
+		Point currentAnchor = null;
+
 		if (sourceObject.equals(this.pnLeftImage)) {
-			Graphics2D g2d = (Graphics2D) g;
-			g2d.setBackground(Color.white);
-			g2d.setColor(Color.red);
-			g2d.drawLine(this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).x,
-					0,
-					this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).x,
-					this.pnLeftImage.getHeight());
-			g2d.drawLine(0,
-					this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).y,
-					this.pnLeftImage.getWidth(),
-					this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).y);
-			g2d.fill3DRect(this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).x - 3,
-					this.pnLeftImage.coorsFromPicToPanel(composer.LeftAnchor).y - 3, 6, 6, true);
-			Point leftTop = new Point();
-			leftTop.setLocation(this.pnLeftImage.coorsFromPicToPanel(
-					new Point(composer.LeftAnchor.x + composer.resultOffsetX,
-							composer.LeftAnchor.y + composer.resultOffsetY)));
-			Point LeftBottom = new Point();
-			LeftBottom.setLocation(this.pnLeftImage.coorsFromPicToPanel(
-					new Point(composer.LeftAnchor.x + composer.resultOffsetX + composer.ResultWidth,
-							composer.LeftAnchor.y + composer.resultOffsetY + composer.ResultHeight)));
-
-			g2d.setColor(Color.green);
-			g2d.drawRect(leftTop.x, leftTop.y, LeftBottom.x - leftTop.x, LeftBottom.y - leftTop.y);
-
+			currentPanel = this.pnLeftImage;
+			currentAnchor = composer.LeftAnchor;
 		}
 		if (sourceObject.equals(this.pnRightImage)) {
+			currentPanel = this.pnRightImage;
+			currentAnchor = composer.RightAnchor;
+		}
+		if ((currentPanel != null) && (currentAnchor != null)) {
 			Graphics2D g2d = (Graphics2D) g;
 			g2d.setBackground(Color.white);
 			g2d.setColor(Color.red);
-			g2d.drawLine(this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).x,
+			g2d.drawLine(currentPanel.coorsFromPicToPanel(currentAnchor).x,
 					0,
-					this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).x,
-					this.pnRightImage.getHeight());
+					currentPanel.coorsFromPicToPanel(currentAnchor).x,
+					currentPanel.getHeight());
 			g2d.drawLine(0,
-					this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).y,
-					this.pnRightImage.getWidth(),
-					this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).y);
-
-			g2d.fill3DRect(this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).x - 3,
-					this.pnRightImage.coorsFromPicToPanel(composer.RightAnchor).y - 3, 6, 6, true);
+					currentPanel.coorsFromPicToPanel(currentAnchor).y,
+					currentPanel.getWidth(),
+					currentPanel.coorsFromPicToPanel(currentAnchor).y);
+			g2d.fill3DRect(currentPanel.coorsFromPicToPanel(currentAnchor).x - 3,
+					currentPanel.coorsFromPicToPanel(currentAnchor).y - 3, 6, 6, true);
 
 			Point leftTop = new Point();
-			leftTop.setLocation(this.pnRightImage.coorsFromPicToPanel(
-					new Point(composer.RightAnchor.x + composer.resultOffsetX,
-							composer.RightAnchor.y + composer.resultOffsetY)));
+			leftTop.setLocation(currentPanel.coorsFromPicToPanel(
+					new Point(currentAnchor.x + composer.resultOffsetX,
+							currentAnchor.y + composer.resultOffsetY)));
+
 			Point rightBottom = new Point();
-			rightBottom.setLocation(this.pnRightImage.coorsFromPicToPanel(
-					new Point(composer.RightAnchor.x + composer.resultOffsetX + composer.ResultWidth,
-							composer.RightAnchor.y + composer.resultOffsetY + composer.ResultHeight)));
+			rightBottom.setLocation(currentPanel.coorsFromPicToPanel(
+					new Point(currentAnchor.x + composer.resultOffsetX + composer.ResultWidth,
+							currentAnchor.y + composer.resultOffsetY + composer.ResultHeight)));
 
 			g2d.setColor(Color.green);
 			g2d.drawRect(leftTop.x, leftTop.y, rightBottom.x - leftTop.x, rightBottom.y - leftTop.y);
+
+			g2d.fill3DRect(leftTop.x - 3,
+					leftTop.y - 3, 6, 6, true);
+			g2d.fill3DRect(rightBottom.x - 3,
+					rightBottom.y - 3, 6, 6, true);
 
 		}
 
@@ -653,14 +645,13 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		if (this.chckbxAutoApply.isSelected()) {
 			if (!this.stopAutoApply)
 				this.applyChanges();
-		}else{
-			if (
-				(arg0.getSource() == this.spnrResultOffsetX)||
-				(arg0.getSource() == this.spnrResultOffsetY)||
-				(arg0.getSource() == this.spnrHeight)||
-				(arg0.getSource() == this.spnrWidth)
-				
-				){
+		} else {
+			if ((arg0.getSource() == this.spnrResultOffsetX) ||
+					(arg0.getSource() == this.spnrResultOffsetY) ||
+					(arg0.getSource() == this.spnrHeight) ||
+					(arg0.getSource() == this.spnrWidth)
+
+			) {
 				this.updateComposerByValues();
 				this.pnLeftImage.repaint();
 				this.pnRightImage.repaint();
@@ -669,13 +660,12 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		}
 
 	}
-	
-	public void save(){
-		if (composer.biResult==null){
+
+	public void save() {
+		if (composer.biResult == null) {
 			return;
 		}
-			
-		
+
 		JDialog jdlg = new JDialog();
 		JFileChooser chooser = new JFileChooser();
 		FileNameExtensionFilter filter = new FileNameExtensionFilter("Graphics (png)", "png");
@@ -688,13 +678,124 @@ public class DlgComposer extends JDialog implements ActionListener, MouseListene
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			globManager.registry.put("LastOpenFile", chooser.getSelectedFile().getAbsolutePath());
 			try {
-				 ImageIO.write( composer.biResult, "PNG", chooser.getSelectedFile());
-				 } catch (IOException e) {
-				 e.printStackTrace();
-				 }
-			
+				ImageIO.write(composer.biResult, "PNG", chooser.getSelectedFile());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
 		}
-		
+
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (e.getSource().equals(this.pnLeftImage) ||
+				e.getSource().equals(this.pnRightImage)) {
+			JPanelPicture currentPanel = null;
+			Point currentAnchor = null;
+			JSpinner currentSpinerX = null;
+			JSpinner currentSpinerY = null;
+
+			if (e.getSource().equals(this.pnLeftImage)) {
+				currentPanel = this.pnLeftImage;
+				currentAnchor = composer.LeftAnchor;
+				currentSpinerX = this.spnrLeftAnchorX;
+				currentSpinerY = this.spnrLeftAnchorY;
+			}
+			if (e.getSource().equals(this.pnRightImage)) {
+				currentPanel = this.pnRightImage;
+				currentAnchor = composer.RightAnchor;
+				currentSpinerX = this.spnrRightAnchorX;
+				currentSpinerY = this.spnrRightAnchorY;
+			}
+
+			// Двигаем якорь
+			if (this.overPoint == 1) {
+				currentAnchor.setLocation(currentPanel.coorsFromPanelToPic(e.getPoint()));
+				this.stopAutoApply = true;
+				currentSpinerX.setValue(currentAnchor.x);
+				this.stopAutoApply = false;
+				currentSpinerY.setValue(currentAnchor.y);
+				currentPanel.repaint();
+			}
+
+			// Двигаем смещением
+			if (this.overPoint == 2) {
+				Point pnt = new Point(currentPanel.coorsFromPanelToPic(e.getPoint()));
+				Point pntPrev = new Point(currentAnchor.x + composer.resultOffsetX, currentAnchor.y + composer.resultOffsetY);
+				this.stopAutoApply = true;
+				this.spnrResultOffsetX.setValue(pnt.x - currentAnchor.x);
+				this.spnrResultOffsetY.setValue(pnt.y - currentAnchor.y);
+				this.spnrWidth.setValue(composer.ResultWidth + (pntPrev.x - pnt.x));
+				this.stopAutoApply = false;
+				this.spnrHeight.setValue(composer.ResultHeight + (pntPrev.y - pnt.y));
+				currentPanel.repaint();
+			}
+
+			// Двигаем размером изображения
+			if (this.overPoint == 3) {
+				Point pnt = new Point(currentPanel.coorsFromPanelToPic(e.getPoint()));
+				
+				if ((pnt.x - currentAnchor.x -  composer.resultOffsetX < 10)||
+					(pnt.y - currentAnchor.y - composer.resultOffsetY<10)	)
+					return;
+				
+				this.stopAutoApply = true;
+				this.spnrWidth.setValue(pnt.x - currentAnchor.x -  composer.resultOffsetX);
+				this.stopAutoApply = false;
+				this.spnrHeight.setValue(pnt.y - currentAnchor.y - composer.resultOffsetY);
+				currentPanel.repaint();
+
+			}
+
+		}
+
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if (e.getSource().equals(this.pnLeftImage) ||
+				e.getSource().equals(this.pnRightImage)) {
+			JPanelPicture currentPanel = (JPanelPicture) e.getSource();
+			Point currentAnchor = null;
+			Point currentOffset = new Point();
+			Point currentSize = new Point();
+
+			if (e.getSource().equals(this.pnLeftImage)) {
+				currentAnchor = composer.LeftAnchor;
+			}
+			if (e.getSource().equals(this.pnRightImage)) {
+				currentAnchor = composer.RightAnchor;
+			}
+
+			this.overPoint = 0;
+
+			Point currentPoint = currentPanel.coorsFromPicToPanel(currentAnchor);
+			currentOffset.setLocation(currentPanel.coorsFromPicToPanel(new Point(currentAnchor.x + composer.resultOffsetX, currentAnchor.y + composer.resultOffsetY)));
+			currentSize.setLocation(currentPanel.coorsFromPicToPanel(new Point(currentAnchor.x + composer.resultOffsetX + composer.ResultWidth, currentAnchor.y + composer.resultOffsetY
+					+ composer.ResultHeight)));
+
+			if (currentPoint.distance(e.getPoint()) <= 3) {
+				currentPanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				this.overPoint = 1;
+
+			}
+
+			if (currentOffset.distance(e.getPoint()) <= 3) {
+				currentPanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				this.overPoint = 2;
+			}
+
+			if (currentSize.distance(e.getPoint()) <= 3) {
+				currentPanel.setCursor(new Cursor(Cursor.MOVE_CURSOR));
+				this.overPoint = 3;
+			}
+
+			if (this.overPoint == 0) {
+				currentPanel.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+		}
 	}
 
 }

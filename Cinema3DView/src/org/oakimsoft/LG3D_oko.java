@@ -128,7 +128,7 @@ public class LG3D_oko implements ActionListener {
 		}
 
 		JButton jbtnOpen = new JButton();
-		jbtnOpen.setText("File..");
+		//jbtnOpen.setText("File..");
 		jbtnOpen.setActionCommand("OpenFile");
 		jbtnOpen.setIcon(new ImageIcon(this.getClass().getResource(
 				"/pic/24x24/fileopen.png")));
@@ -137,7 +137,7 @@ public class LG3D_oko implements ActionListener {
 		this.globalToolbar.add(jbtnOpen);
 
 		JButton jbtnOpenFolder = new JButton();
-		jbtnOpenFolder.setText("Folder...");
+		//jbtnOpenFolder.setText("Folder...");
 		jbtnOpenFolder.setActionCommand("OpenFolder");
 		jbtnOpenFolder.setIcon(new ImageIcon(this.getClass().getResource(
 				"/pic/24x24/folder_open.png")));
@@ -145,7 +145,7 @@ public class LG3D_oko implements ActionListener {
 		this.globalToolbar.add(jbtnOpenFolder);
 
 		JButton jbtnComposer = new JButton();
-		jbtnComposer.setText("Composer");
+		// jbtnComposer.setText("Composer");
 		jbtnComposer.setActionCommand("Composer");
 		jbtnComposer.addActionListener(this);
 		jbtnComposer.setIcon(new ImageIcon(this.getClass().getResource(
@@ -153,7 +153,9 @@ public class LG3D_oko implements ActionListener {
 		this.globalToolbar.add(jbtnComposer);
 
 		
-		this.globalToolbar.add(this.lblMediaInfo);		
+		this.globalToolbar.add(this.lblMediaInfo);
+//		this.globalToolbar.setBorderPainted(false);
+//		this.globalToolbar.setBackground(Color.black);
 		
 		// JButton jbtnClose = new JButton();
 		// jbtnClose.setText("Close");
@@ -170,7 +172,7 @@ public class LG3D_oko implements ActionListener {
 		jbtnREFRESH.setActionCommand(C3DActions.refreshImage);
 		jbtnREFRESH.addActionListener(this);
 		jbtnREFRESH.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/Refresh.png")));
+				"/pic/24x24/Refresh.png")));
 		jbtnREFRESH.setToolTipText("Refresh image");
 		
 		this.normalButton = jbtnREFRESH.getBackground();
@@ -181,83 +183,83 @@ public class LG3D_oko implements ActionListener {
 		jbtnHHLR.setActionCommand(C3DActions.setTypeHHLR);
 		jbtnHHLR.addActionListener(this);
 		jbtnHHLR.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/HHLR.png")));
+				"/pic/24x24/HHLR.png")));
 
 		jbtnHHRL = new JButton();
 		jbtnHHRL.setActionCommand(C3DActions.setTypeHHRL);
 		jbtnHHRL.addActionListener(this);
 		jbtnHHRL.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/HHRL.png")));
+				"/pic/24x24/HHRL.png")));
 
 		jbtnHFLR = new JButton();
 		jbtnHFLR.setActionCommand(C3DActions.setTypeHFLR);
 		jbtnHFLR.addActionListener(this);
 		jbtnHFLR.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/HFLR.png")));
+				"/pic/24x24/HFLR.png")));
 
 		jbtnHFRL = new JButton();
 		jbtnHFRL.setActionCommand(C3DActions.setTypeHFRL);
 		jbtnHFRL.addActionListener(this);
 		jbtnHFRL.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/HFRL.png")));
+				"/pic/24x24/HFRL.png")));
 
 		jbtnVHLR = new JButton();
 		jbtnVHLR.setActionCommand(C3DActions.setTypeVHLR);
 		jbtnVHLR.addActionListener(this);
 		jbtnVHLR.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/VHLR.png")));
+				"/pic/24x24/VHLR.png")));
 
 		jbtnVHRL = new JButton();
 		jbtnVHRL.setActionCommand(C3DActions.setTypeVHRL);
 		jbtnVHRL.addActionListener(this);
 		jbtnVHRL.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/VHRL.png")));
+				"/pic/24x24/VHRL.png")));
 
 		jbtnVFLR = new JButton();
 		jbtnVFLR.setActionCommand(C3DActions.setTypeVFLR);
 		jbtnVFLR.addActionListener(this);
 		jbtnVFLR.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/VFLR.png")));
+				"/pic/24x24/VFLR.png")));
 
 		jbtnVFRL = new JButton();
 		jbtnVFRL.setActionCommand(C3DActions.setTypeVFRL);
 		jbtnVFRL.addActionListener(this);
 		jbtnVFRL.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/VFRL.png")));
+				"/pic/24x24/VFRL.png")));
 
 		jbtnASIS = new JButton();
 		jbtnASIS.setActionCommand(C3DActions.setTypeASIS);
 		jbtnASIS.addActionListener(this);
 		jbtnASIS.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/PIC_ASIS.png")));
+				"/pic/24x24/PIC_ASIS.png")));
 		jbtnASIS.setToolTipText("Show image as is");
 
 		jbtnSIZEFS = new JButton();
 		jbtnSIZEFS.setActionCommand(C3DActions.setSIZEFS);
 		jbtnSIZEFS.addActionListener(this);
 		jbtnSIZEFS.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/SIZEFS.png")));
+				"/pic/24x24/SIZEFS.png")));
 		jbtnSIZEFS.setToolTipText("Fit window ");
 
 		jbtnSIZE100 = new JButton();
 		jbtnSIZE100.setActionCommand(C3DActions.setSIZE100);
 		jbtnSIZE100.addActionListener(this);
 		jbtnSIZE100.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/SIZE100.png")));
+				"/pic/24x24/SIZE100.png")));
 		jbtnSIZE100.setToolTipText("Zoom 1x");
 
 		jbtnSIZE050 = new JButton();
 		jbtnSIZE050.setActionCommand(C3DActions.setSIZE050);
 		jbtnSIZE050.addActionListener(this);
 		jbtnSIZE050.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/SIZE050.png")));
+				"/pic/24x24/SIZE050.png")));
 		jbtnSIZE050.setToolTipText("Zoom 50%");
 
 		jbtnSIZE025 = new JButton();
 		jbtnSIZE025.setActionCommand(C3DActions.setSIZE025);
 		jbtnSIZE025.addActionListener(this);
 		jbtnSIZE025.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/SIZE025.png")));
+				"/pic/24x24/SIZE025.png")));
 		jbtnSIZE025.setToolTipText("Zoom 25%");
 
 		
@@ -265,14 +267,14 @@ public class LG3D_oko implements ActionListener {
 		jbtnPREV.setActionCommand(C3DActions.selectPrevFile);
 		jbtnPREV.addActionListener(this);
 		jbtnPREV.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/PREV.png")));
+				"/pic/24x24/PREV.png")));
 		jbtnPREV.setToolTipText("Prev image");
 
 		JButton jbtnNEXT = new JButton();
 		jbtnNEXT.setActionCommand(C3DActions.selectNextFile);
 		jbtnNEXT.addActionListener(this);
 		jbtnNEXT.setIcon(new ImageIcon(this.getClass().getResource(
-				"/pic/36x36/NEXT.png")));
+				"/pic/24x24/NEXT.png")));
 		jbtnNEXT.setToolTipText("Next image");
 
 		jsliderParallax = new JSlider();
@@ -290,11 +292,11 @@ public class LG3D_oko implements ActionListener {
 		jsliderParallax.setMinimum(-300);
 		jsliderParallax.setMaximum(+300);
 		jsliderParallax.setValue(0);
-		jsliderParallax.setMajorTickSpacing(50);
-		jsliderParallax.setMinorTickSpacing(10);
+		jsliderParallax.setMajorTickSpacing(100);
+		jsliderParallax.setMinorTickSpacing(50);
 		jsliderParallax.setPaintTicks(true);
 		jsliderParallax.setPaintLabels(true);
-		jsliderParallax.setMaximumSize(new Dimension(400, 500));
+		jsliderParallax.setMaximumSize(new Dimension(200, 500));
 
 		
 		this.alTypeButtons.clear();
@@ -315,28 +317,31 @@ public class LG3D_oko implements ActionListener {
 		this.alSizeButtons.add(jbtnSIZE025);
 		
 		
-		this.downToolbar.add(jbtnREFRESH);
-		this.downToolbar.add(jbtnASIS);
-		this.downToolbar.add(jbtnHFLR);
-		this.downToolbar.add(jbtnHFRL);
-		this.downToolbar.add(jbtnVFLR);
-		this.downToolbar.add(jbtnVFRL);
-		this.downToolbar.add(jbtnHHRL);
-		this.downToolbar.add(jbtnHHLR);
-		this.downToolbar.add(jbtnVHLR);
-		this.downToolbar.add(jbtnVHRL);
-		this.downToolbar.add(jbtnSIZEFS);
-		this.downToolbar.add(jbtnSIZE100);
-		this.downToolbar.add(jbtnSIZE050);
-		this.downToolbar.add(jbtnSIZE025);
-		this.downToolbar.add(jsliderParallax);
-		this.downToolbar.add(jbtnPREV);
-		this.downToolbar.add(jbtnNEXT);
+		this.globalToolbar.addSeparator();
+		this.globalToolbar.add(jbtnREFRESH);
+		this.globalToolbar.add(jbtnASIS);
+		this.globalToolbar.add(jbtnHFLR);
+		this.globalToolbar.add(jbtnHFRL);
+		this.globalToolbar.add(jbtnVFLR);
+		this.globalToolbar.add(jbtnVFRL);
+		this.globalToolbar.add(jbtnHHRL);
+		this.globalToolbar.add(jbtnHHLR);
+		this.globalToolbar.add(jbtnVHLR);
+		this.globalToolbar.add(jbtnVHRL);
+		this.globalToolbar.addSeparator();
+		this.globalToolbar.add(jbtnSIZEFS);
+		this.globalToolbar.add(jbtnSIZE100);
+		this.globalToolbar.add(jbtnSIZE050);
+		this.globalToolbar.add(jbtnSIZE025);
+		this.globalToolbar.add(jsliderParallax);
+		this.globalToolbar.addSeparator();		
+		this.globalToolbar.add(jbtnPREV);
+		this.globalToolbar.add(jbtnNEXT);
 
 		sView.setStereoType(StereoViewer.AS_IS);
 		sView.setStretch(StereoViewer.STRETCH_SIZE100);
 
-		frame.getContentPane().add(this.downToolbar, BorderLayout.SOUTH);
+		// frame.getContentPane().add(this.downToolbar, BorderLayout.SOUTH);
 
 		jpnMain = new PnDraw(sView);
 		jpnMain.biDisplaying = this.biBack;
@@ -611,7 +616,7 @@ public class LG3D_oko implements ActionListener {
 		this.lblMediaInfo.setText( 
 				"   [ "+String.valueOf(globManager.currentFile+1)+"/"+String.valueOf(globManager.files.size())+" ]   " +
 				
-				globManager.files.get(globManager.currentFile).getAbsolutePath().concat(
+				globManager.files.get(globManager.currentFile).getName().concat(
 						"  "+ " "
 						
 						));

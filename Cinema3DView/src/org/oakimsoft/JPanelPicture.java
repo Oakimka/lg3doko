@@ -7,11 +7,12 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-public class JPanelPicture extends JPanel implements MouseListener {
+public class JPanelPicture extends JPanel implements MouseListener, MouseMotionListener {
 	/**
 	 * 
 	 */
@@ -20,6 +21,7 @@ public class JPanelPicture extends JPanel implements MouseListener {
 	public Color backgroundColor = Color.black;
 	public PaintComponentExtension paintComponentExtension = null;
 	private MouseListener externalMouseListener = null;
+	private MouseMotionListener externalMouseMotionListener = null;
 	
 
 	/**
@@ -42,6 +44,13 @@ public class JPanelPicture extends JPanel implements MouseListener {
 		
 	}
 
+	public void setExternalMouseMotionListener(MouseMotionListener mouseMotionListener){
+		if ( mouseMotionListener!=null){
+		externalMouseMotionListener = mouseMotionListener;
+		this.addMouseMotionListener(this);
+		}
+		
+	}	
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -162,6 +171,21 @@ public class JPanelPicture extends JPanel implements MouseListener {
 			}
 		}
 		return panelPoint;
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (externalMouseMotionListener!=null){
+			externalMouseMotionListener.mouseDragged( e);
+		}
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if (externalMouseMotionListener!=null){
+			externalMouseMotionListener.mouseMoved( e);
+		}
 	}
 	
 

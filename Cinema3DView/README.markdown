@@ -5,7 +5,7 @@ lg3d OKO
 About
 -----
 
-LG 3D monitors stereomate viewer. Stereomate creation.
+LG Cinema 3D monitors stereomate viewer. Stereomate creation.
 
 
 Author
