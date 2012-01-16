@@ -153,7 +153,6 @@ public class LG3D_oko implements ActionListener {
 		this.globalToolbar.add(jbtnComposer);
 
 		
-		this.globalToolbar.add(this.lblMediaInfo);
 //		this.globalToolbar.setBorderPainted(false);
 //		this.globalToolbar.setBackground(Color.black);
 		
@@ -338,6 +337,9 @@ public class LG3D_oko implements ActionListener {
 		this.globalToolbar.add(jbtnPREV);
 		this.globalToolbar.add(jbtnNEXT);
 
+		this.globalToolbar.addSeparator();		
+		this.globalToolbar.add(this.lblMediaInfo);
+		
 		sView.setStereoType(StereoViewer.AS_IS);
 		sView.setStretch(StereoViewer.STRETCH_SIZE100);
 
@@ -612,6 +614,7 @@ public class LG3D_oko implements ActionListener {
 	
 	
 	public void updateMediaInfo(){
+		if (globManager.files.size()>0){
 		this.lblMediaInfo.setFont(new Font(Font.SANS_SERIF,Font.BOLD,18));
 		this.lblMediaInfo.setText( 
 				"   [ "+String.valueOf(globManager.currentFile+1)+"/"+String.valueOf(globManager.files.size())+" ]   " +
@@ -620,6 +623,7 @@ public class LG3D_oko implements ActionListener {
 						"  "+ " "
 						
 						));
+		}
 	}
 
 	public void stateChanged(ChangeEvent e) {
